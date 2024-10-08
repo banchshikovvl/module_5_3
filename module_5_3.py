@@ -29,39 +29,42 @@ class House:
     def __eq__(self, other):
         if isinstance(other, House):
             return self.number_of_floors == other.number_of_floors
+        elif isinstance(other, int):
+            return self.number_of_floors == other
 
-    def __add__(self, value):
-        if isinstance(value, (int, House)):
-            return self.number_of_floors + value
-
-    def __iadd__(self, value):
-        if isinstance(value, int):
-            # self.number_of_floors += value
-            return self.__add__(value)
-
-    def __radd__(self, value):
-        if isinstance(value, int):
-            return self.__add__(value)
-
-    def __gt__(self, other):
+    def __add__(self, other):
         if isinstance(other, House):
-            return self.number_of_floors > other.number_of_floors
+            self.number_of_floors += other.number_of_floors
+        elif isinstance(other, int):
+            self.number_of_floors += other
+        return self
 
-    def __ge__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors >= other.number_of_floors
+    def __radd__(self, other):
+       return self.__add__(other)
+
+    def __iadd__(self, other):
+        return self.__add__(other)
 
     def __lt__(self, other):
         if isinstance(other, House):
             return self.number_of_floors < other.number_of_floors
+        elif isinstance(other, int):
+            return self.number_of_floors < other
+
+    def __ge__(self, other):
+        return not self.__lt__(other)
 
     def __le__(self, other):
         if isinstance(other, House):
             return self.number_of_floors <= other.number_of_floors
+        elif isinstance(other, int):
+            return self.number_of_floors <= other
+
+    def __gt__(self, other):
+        return self.__le__(other)
 
     def __ne__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors != other.number_of_floors
+        return not self.__eq__(other)
 
     def go_to(self, new_floor):
         list_ = []
@@ -101,7 +104,8 @@ print()
 print('Метод "add":', dom1 + 10)
 print(dom1 == dom2)
 print()
-print('Метод "iadd":', dom1 += 10)
+dom1 += 10
+print('Метод "iadd":', dom1)
 print()
 print('Метод "radd":', 10 + dom2)
 print()
@@ -114,7 +118,4 @@ print()
 print('Метод "le":', dom1 <= dom2)
 print()
 print('Метод "ne":', dom1 != dom2)
-
-# h1 += 10 # __iadd__
-# print(h1)
 
